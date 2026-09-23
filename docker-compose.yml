@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: mysql
+    volumes:
+      - db:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=api-com-docker-db
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=root
+    networks:
+      - primeira-rede-bridge
+
+  api-docker:
+    build: 
+      context: .
+    container_name: api-docker
+    ports: 
+      - 3000:3000
+    depends_on:
+      - mysql
+    networks:
+      - primeira-rede-bridge
+networks:
+  primeira-rede-bridge:
+    name: primeira-rede-bridge
+    external: true
+    driver: bridge
+
+
+volumes:
+  db:
+
