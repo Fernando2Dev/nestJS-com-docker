@@ -7,7 +7,7 @@ on:
 
 jobs: 
   build: 
-    name: 'Build and Push'
+    name: Build and Push
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,11 +21,21 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: 'npm'
-      - run: 'npm install'
-      - run: 'npm run test' 
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Geração da Tag
+        id: generate_tag
+        run: |
+          SHA=${echo $GITHUB_SHA | head -c7}
+          echo "sha=$SHA" >> $GITHUB_OUTPUT
 
       - name: Build Docker image
-      - run: docker build -t ci-api:latest .
+        run: docker build -t ci-api:${{ steps.generate_tag.outputs.sha }} .
       
 
 
