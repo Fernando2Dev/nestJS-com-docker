@@ -44,7 +44,7 @@ jobs:
         run: docker build -t fernando2dev/ci-api:${{ steps.generate_tag.outputs.sha }} .
       
       - name: Push image
-        run: ducker push fernando2dev/ci-api:${{ steps.generate_tag.outputs.sha }}
+        run: docker push fernando2dev/ci-api:${{ steps.generate_tag.outputs.sha }}
 
 
       
